@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Uwang Body Parts</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--lime:#b8f36b;--ink:#101710}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:14px;background:radial-gradient(ellipse at top,#315532,#101710 68%);color:#fff;font-family:Arial,sans-serif;overflow:hidden}
+.carousel-wrap{width:100%;max-width:430px}
+.carousel{height:min(78vh,560px);min-height:430px;position:relative;display:flex;align-items:center;justify-content:center;perspective:900px;touch-action:pan-y}
+.card{position:absolute;width:86%;height:100%;border:1px solid #ffffff44;border-radius:22px;overflow:hidden;background:#19271a;box-shadow:0 18px 45px #0009;transition:transform .35s ease,opacity .35s ease;text-align:left}
+.card>img{width:100%;height:52%;object-fit:contain;background:#f7f7f2;padding:8px;display:block}
+.content{height:48%;padding:16px;overflow:auto;background:#19271a}
+.tag{display:inline-block;background:var(--lime);color:#172016;border-radius:20px;padding:6px 10px;font-size:10px;font-weight:bold}
+h2{font-size:21px;margin:9px 0 7px}
+p,li{font-size:12px;line-height:1.45;color:#e4eae1}
+ul{padding-left:17px;margin-top:6px}li{margin:3px 0}b{color:var(--lime)}
+.active{transform:translateX(0) scale(1);opacity:1;z-index:5}.prev{transform:translateX(-38%) scale(.78);opacity:.38;z-index:2}.next{transform:translateX(38%) scale(.78);opacity:.38;z-index:2}.hidden{transform:scale(.6);opacity:0;pointer-events:none;z-index:0}
+.controls{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:13px}.arrow{width:40px;height:40px;border-radius:50%;border:1px solid #ffffff55;background:#ffffff12;color:#fff;font-size:23px}.dots{display:flex;gap:8px}.dot{width:8px;height:8px;border:0;border-radius:10px;background:#758075}.dot.active{width:22px;background:var(--lime)}
+.hint{text-align:center;font-size:10px;color:#a6b4a6;margin-top:8px}
+@media(max-height:600px){.carousel{height:74vh;min-height:360px}.card>img{height:48%}.content{height:52%}}
+</style>
+</head>
+<body>
+<main class="carousel-wrap">
+<section class="carousel" id="carousel">
+
+<article class="card">
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fiddler_beetle_morphology_diagram.svg" alt="Beetle external anatomy diagram" loading="lazy">
+<div class="content"><span class="tag">1 · BODY</span><h2>Three Main Parts</h2><p>A beetle's body has three main regions:</p><ul>
+<li><b>Head:</b> has the eyes, antennae, and mouth.</li>
+<li><b>Thorax:</b> supports the six legs and wings.</li>
+<li><b>Abdomen:</b> contains many internal organs.</li>
+<li><b>Exoskeleton:</b> the hard outer covering that protects the body.</li>
+</ul></div>
+</article>
+
+<article class="card">
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Beetleplustext.jpg" alt="Beetle body and head parts" loading="lazy">
+<div class="content"><span class="tag">2 · HEAD</span><h2>Head Parts</h2><p>The head helps the beetle sense its surroundings and eat.</p><ul>
+<li><b>Antennae:</b> used for smell, touch, and sensing.</li>
+<li><b>Compound eyes:</b> help detect light and movement.</li>
+<li><b>Mandibles:</b> jaws used for biting and chewing.</li>
+<li><b>Palps:</b> help handle and sense food.</li>
+</ul></div>
+</article>
+
+<article class="card">
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Oryctes_nasicornis_male_tagged.png" alt="Tagged rhinoceros beetle showing external body features" loading="lazy">
+<div class="content"><span class="tag">3 · THORAX & LEGS</span><h2>Legs and Wings</h2><p>The thorax carries the beetle's legs and wings.</p><ul>
+<li><b>Legs:</b> each beetle has six legs for walking and climbing.</li>
+<li><b>Femur:</b> the strong middle part of the leg.</li>
+<li><b>Tibia:</b> the lower leg section.</li>
+<li><b>Tarsus:</b> the foot section with small claws.</li>
+<li><b>Elytra:</b> hard front wings that protect the delicate hind wings.</li>
+</ul></div>
+</article>
+
+</section>
+<nav class="controls" aria-label="Carousel navigation">
+<button class="arrow" id="prev" aria-label="Previous">‹</button>
+<div class="dots" id="dots"></div>
+<button class="arrow" id="next" aria-label="Next">›</button>
+</nav>
+<p class="hint">Swipe left or right</p>
+</main>
+<script>
+const cards=[...document.querySelectorAll('.card')],dotsBox=document.getElementById('dots'),carousel=document.getElementById('carousel');let current=0,startX=0;
+cards.forEach((_,i)=>{const d=document.createElement('button');d.className='dot';d.setAttribute('aria-label','Slide '+(i+1));d.onclick=()=>{current=i;render()};dotsBox.appendChild(d)});const dots=[...dotsBox.children];
+function render(){cards.forEach((card,i)=>{const diff=(i-current+cards.length)%cards.length;card.className='card';if(diff===0)card.classList.add('active');else if(diff===1)card.classList.add('next');else if(diff===cards.length-1)card.classList.add('prev');else card.classList.add('hidden')});dots.forEach((d,i)=>d.classList.toggle('active',i===current))}
+function move(n){current=(current+n+cards.length)%cards.length;render()}
+document.getElementById('prev').onclick=()=>move(-1);document.getElementById('next').onclick=()=>move(1);
+carousel.addEventListener('touchstart',e=>startX=e.changedTouches[0].screenX,{passive:true});carousel.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-startX;if(Math.abs(dx)>45)move(dx<0?1:-1)},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});render();
+</script>
+</body>
+</html>
